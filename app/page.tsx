@@ -35,6 +35,22 @@ const App = () => {
     [isLevelStarted]
   );
 
+  const onKeyUp = useCallback(
+    (event: globalThis.KeyboardEvent) => {
+      if (
+        isLevelStarted &&
+        currentInput !== currentSequence &&
+        event.key !== "Enter"
+      ) {
+        setIsLevelStarted(false);
+        setCurrentLevel(1);
+        setCurrentInput("");
+        setCurrentSequence(generateRandomSequence(currentLength));
+      }
+    },
+    [currentInput, currentLength, currentSequence, isLevelStarted]
+  );
+
   useEffect(() => {
     // LOSE BY WRONG INPUT
     const currentSequenceToCompare = currentSequence.substring(
@@ -64,10 +80,17 @@ const App = () => {
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown);
 
+    if (isLevelStarted) {
+      document.addEventListener("keyup", onKeyUp);
+    } else {
+      document.removeEventListener("keyup", onKeyUp);
+    }
+
     return () => {
       document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("keyup", onKeyUp);
     };
-  }, [onKeyDown]);
+  }, [isLevelStarted, onKeyDown, onKeyUp]);
 
   useEffect(() => {
     setCurrentSequence(generateRandomSequence(currentLength));
