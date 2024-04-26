@@ -20,13 +20,17 @@ const App = () => {
       if (!isLevelStarted && event.key === "Enter") {
         setCurrentInput("");
         setIsLevelStarted(true);
-      } else {
-        if (event.repeat) {
-          return;
-        }
-
-        setCurrentInput((prev) => prev + event.key);
       }
+
+      if (!isLevelStarted) {
+        return;
+      }
+
+      if (event.repeat) {
+        return;
+      }
+
+      setCurrentInput((prev) => prev + event.key);
     },
     [isLevelStarted]
   );
@@ -44,9 +48,6 @@ const App = () => {
       setCurrentInput("");
       setCurrentSequence(generateRandomSequence(currentLength));
     }
-
-    console.log("currentSequenceToCompare", currentSequenceToCompare);
-    console.log("currentInput", currentInput);
 
     // WIN
     if (
