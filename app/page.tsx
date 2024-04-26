@@ -3,6 +3,12 @@
 import { useCallback, useEffect, useState } from "react";
 import Keycap from "./components/keycap/Keycap";
 import { generateRandomSequence } from "./helpers";
+import { Roboto_Mono } from "next/font/google";
+
+const robotoMono = Roboto_Mono({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 const App = () => {
   const [currentLevel, setCurrentLevel] = useState(1);
@@ -97,9 +103,9 @@ const App = () => {
   }, [currentLength]);
 
   return (
-    <>
+    <div className={robotoMono.className}>
       <div>
-        <div className="flex justify-end pr-4 mt-4">- WORK IN PROGRESS -</div>
+        <div className="flex justify-end pr-4 mt-4">Version 1.0.0</div>
         {isLevelStarted && (
           <div className="flex flex-col justify-center items-center">
             <h2>Level</h2>
@@ -116,11 +122,11 @@ const App = () => {
           {currentLevel === 1 && (
             <div className="flex flex-col justify-center items-center">
               <div>Rules:</div>
-              <div>
+              <div className="mr-auto">
                 - Enter each key you see from left to right while not letting go
                 of any of them.
               </div>
-              <div>
+              <div className="mr-auto">
                 - If needed, feel free to use other parts of your body other
                 than your fingers.
               </div>
@@ -129,7 +135,7 @@ const App = () => {
           <div>PRESS ENTER TO START</div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
