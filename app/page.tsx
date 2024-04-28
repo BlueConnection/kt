@@ -120,7 +120,7 @@ const App = () => {
         <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">
           {currentLevel === 1 && (
             <div className="flex flex-col justify-center items-center">
-              <div>Rules:</div>
+              <div className="mb-5">Rules:</div>
               <div className="mr-auto">
                 - Enter each key you see from left to right while not letting go
                 of any of them.
