@@ -131,7 +131,7 @@ const App = () => {
               </div>
             </div>
           )}
-          <div>PRESS ENTER TO START</div>
+          <div>Press enter to start level {currentLevel}</div>
         </div>
       )}
     </div>
