@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState, useMemo } from "react";
 import Keycap from "./components/keycap/Keycap";
 import { generateRandomSequence } from "./helpers";
 import { Roboto_Mono } from "next/font/google";
+import useLocalStorageState from "use-local-storage-state";
 
 const robotoMono = Roboto_Mono({
   weight: "400",
@@ -16,6 +17,9 @@ const App = () => {
   const [currentInput, setCurrentInput] = useState("");
   const [currentSequence, setCurrentSequence] = useState("");
   const [isLevelStarted, setIsLevelStarted] = useState(false);
+  const [highScore, setHighScore] = useLocalStorageState("highScore", {
+    defaultValue: 0,
+  });
 
   const keycaps = useMemo(
     () =>
@@ -116,12 +120,23 @@ const App = () => {
       currentSequence.length === currentLength &&
       currentInput === currentSequence
     ) {
+      if (currentLevel > highScore) {
+        setHighScore(currentLevel);
+      }
+
       setIsLevelStarted(false);
       setCurrentLevel((prev) => ++prev);
       setCurrentInput("");
       setCurrentSequence(generateRandomSequence(currentLength));
     }
-  }, [currentInput, currentSequence, currentLength, currentLevel]);
+  }, [
+    currentInput,
+    currentSequence,
+    currentLength,
+    currentLevel,
+    highScore,
+    setHighScore,
+  ]);
 
   // ADD & REMOVE EVENT HANDLERS
   useEffect(() => {
@@ -147,12 +162,12 @@ const App = () => {
   return (
     <div className={`${robotoMono.className} h-full`}>
       <div className="flex flex-row justify-between">
-        <div className="invisible">VERSION 1.0.0</div>
+        <div className="invisible">HIGH SCORE: {highScore}</div>
 
         <div className={isLevelStarted ? "" : "invisible"}>
           LEVEL {currentLevel}
         </div>
-        <div>VERSION 1.0.0</div>
+        <div>HIGH SCORE: {highScore}</div>
       </div>
       {isLevelStarted ? (
         <div className="flex flex-col justify-center items-center h-[calc(100%-20px)]">
