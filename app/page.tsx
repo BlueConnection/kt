@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import Keycap from "./components/keycap/Keycap";
 import { generateRandomSequence } from "./helpers";
 import { Roboto_Mono } from "next/font/google";
@@ -17,9 +17,13 @@ const App = () => {
   const [currentSequence, setCurrentSequence] = useState("");
   const [isLevelStarted, setIsLevelStarted] = useState(false);
 
-  const keycaps = currentSequence.split("").map((c) => {
-    return <Keycap key={crypto.randomUUID()} character={c.toUpperCase()} />;
-  });
+  const keycaps = useMemo(
+    () =>
+      currentSequence.split("").map((c) => {
+        return <Keycap key={crypto.randomUUID()} character={c.toUpperCase()} />;
+      }),
+    [currentSequence]
+  );
 
   const onKeyDown = useCallback(
     (event: globalThis.KeyboardEvent) => {
