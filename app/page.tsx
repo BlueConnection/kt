@@ -105,12 +105,12 @@ const App = () => {
   return (
     <div className={`${robotoMono.className} h-full`}>
       <div className="flex flex-row justify-between">
-        <div className="invisible">Version 1.0.0</div>
+        <div className="invisible">VERSION 1.0.0</div>
 
         <div className={isLevelStarted ? "" : "invisible"}>
-          Level {currentLevel}
+          LEVEL {currentLevel}
         </div>
-        <div>Version 1.0.0</div>
+        <div>VERSION 1.0.0</div>
       </div>
       {isLevelStarted ? (
         <div className="flex flex-col justify-center items-center h-[calc(100%-20px)]">
@@ -131,7 +131,7 @@ const App = () => {
               </div>
             </div>
           )}
-          <div>Press enter to start level {currentLevel}</div>
+          <div>PRESS ENTER TO START LEVEL {currentLevel}</div>
         </div>
       )}
     </div>
