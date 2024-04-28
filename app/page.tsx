@@ -57,6 +57,41 @@ const App = () => {
     [currentInput, currentLength, currentSequence, isLevelStarted]
   );
 
+  // KEY COUNT INCREASES
+  useEffect(() => {
+    switch (currentLevel) {
+      case 5:
+        setCurrentLength((prev) => ++prev); // 4
+        break;
+      case 15:
+        setCurrentLength((prev) => ++prev); // 5
+        break;
+      case 30:
+        setCurrentLength((prev) => ++prev); // 6
+        break;
+      case 50:
+        setCurrentLength((prev) => ++prev); // 7
+        break;
+      case 75:
+        setCurrentLength((prev) => ++prev); // 8
+        break;
+      case 105:
+        setCurrentLength((prev) => ++prev); // 9
+        break;
+      case 140:
+        setCurrentLength((prev) => ++prev); // 10
+        break;
+      case 145:
+        setCurrentLength((prev) => ++prev); // 11
+        break;
+      case 150:
+        setCurrentLength((prev) => ++prev); // 12
+        break;
+      default:
+        break;
+    }
+  }, [currentLevel]);
+
   // INPUT TYPE WIN & LOSE CONDITIONS
   useEffect(() => {
     // LOSE BY WRONG INPUT
