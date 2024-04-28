@@ -103,22 +103,21 @@ const App = () => {
   }, [currentLength]);
 
   return (
-    <div className={robotoMono.className}>
-      <div>
-        <div className="flex justify-end pr-4 mt-4">Version 1.0.0</div>
-        {isLevelStarted && (
-          <div className="flex flex-col justify-center items-center">
-            <h2>Level</h2>
-            <div>{currentLevel}</div>
-          </div>
-        )}
+    <div className={`${robotoMono.className} h-full`}>
+      <div className="flex flex-row justify-between">
+        <div className="invisible">Version 1.0.0</div>
+
+        <div className={isLevelStarted ? "" : "invisible"}>
+          Level {currentLevel}
+        </div>
+        <div>Version 1.0.0</div>
       </div>
       {isLevelStarted ? (
-        <div className="flex flex-col justify-center items-center h-screen">
+        <div className="flex flex-col justify-center items-center h-[calc(100%-20px)]">
           <div className="flex flex-row gap-4">{keycaps}</div>
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center h-screen gap-20">
+        <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">
           {currentLevel === 1 && (
             <div className="flex flex-col justify-center items-center">
               <div>Rules:</div>
