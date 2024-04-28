@@ -57,6 +57,7 @@ const App = () => {
     [currentInput, currentLength, currentSequence, isLevelStarted]
   );
 
+  // INPUT TYPE WIN & LOSE CONDITIONS
   useEffect(() => {
     // LOSE BY WRONG INPUT
     const currentSequenceToCompare = currentSequence.substring(
@@ -71,7 +72,7 @@ const App = () => {
       setCurrentSequence(generateRandomSequence(currentLength));
     }
 
-    // WIN
+    // WIN LEVEL
     if (
       currentSequence.length === currentLength &&
       currentInput === currentSequence
@@ -83,6 +84,7 @@ const App = () => {
     }
   }, [currentInput, currentSequence, currentLength, currentLevel]);
 
+  // ADD & REMOVE EVENT HANDLERS
   useEffect(() => {
     document.addEventListener("keydown", onKeyDown);
 
@@ -98,6 +100,7 @@ const App = () => {
     };
   }, [isLevelStarted, onKeyDown, onKeyUp]);
 
+  // FIX HYDRATION ISSUE
   useEffect(() => {
     setCurrentSequence(generateRandomSequence(currentLength));
   }, [currentLength]);
