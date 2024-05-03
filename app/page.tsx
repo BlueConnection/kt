@@ -6,6 +6,12 @@ import { generateRandomSequence } from "./helpers";
 import { Roboto_Mono } from "next/font/google";
 import useLocalStorageState from "use-local-storage-state";
 import { useTimer } from "react-timer-hook";
+import "./page.css";
+import {
+  LossByLetGoInformation,
+  LossByTimeInformation,
+  LossByWrongInputInformation,
+} from "./types";
 
 const robotoMono = Roboto_Mono({
   weight: "400",
@@ -19,10 +25,18 @@ const App = () => {
   const [currentSequence, setCurrentSequence] = useState("");
   const [isLevelStarted, setIsLevelStarted] = useState(false);
   const [timerSeconds, setTimerSeconds] = useState(3);
+  const [lossByLetGo, setLossByLetGo] = useState<LossByLetGoInformation | null>(
+    null
+  );
+  const [lossByWrongInput, setLossByWrongInput] =
+    useState<LossByWrongInputInformation | null>(null);
+  const [lossByTime, setLossByTime] = useState<LossByTimeInformation | null>(
+    null
+  );
   const [highScore, setHighScore] = useLocalStorageState("highScore", {
     defaultValue: 0,
   });
-  const { seconds, start, restart } = useTimer({
+  const { seconds, restart } = useTimer({
     expiryTimestamp: (() => {
       const time = new Date();
 
@@ -38,6 +52,10 @@ const App = () => {
 
       restart(time, false);
 
+      setLossByTime({
+        level: currentLevel,
+        sequence: currentSequence,
+      });
       setIsLevelStarted(false);
       setCurrentLevel(1);
       setCurrentInput("");
@@ -48,14 +66,23 @@ const App = () => {
   const keycaps = useMemo(
     () =>
       currentSequence.split("").map((c) => {
-        return <Keycap key={crypto.randomUUID()} character={c.toUpperCase()} />;
+        return (
+          <Keycap
+            key={crypto.randomUUID()}
+            character={c.toUpperCase()}
+            isPressed={currentInput.includes(c)}
+          />
+        );
       }),
-    [currentSequence]
+    [currentSequence, currentInput]
   );
 
   const onKeyDown = useCallback(
     (event: globalThis.KeyboardEvent) => {
       if (!isLevelStarted && event.key === "Enter") {
+        setLossByLetGo(null);
+        setLossByWrongInput(null);
+        setLossByTime(null);
         setCurrentInput("");
         setIsLevelStarted(true);
 
@@ -96,9 +123,21 @@ const App = () => {
         setCurrentLevel(1);
         setCurrentInput("");
         setCurrentSequence(generateRandomSequence(currentLength));
+        setLossByLetGo({
+          level: currentLevel,
+          sequence: currentSequence,
+          character: event.key,
+        });
       }
     },
-    [currentInput, currentLength, currentSequence, isLevelStarted, restart]
+    [
+      currentInput,
+      currentLength,
+      currentSequence,
+      isLevelStarted,
+      restart,
+      currentLevel,
+    ]
   );
 
   // KEY COUNT INCREASES
@@ -164,6 +203,13 @@ const App = () => {
 
       restart(time, false);
 
+      setLossByWrongInput({
+        level: currentLevel,
+        sequence: currentSequence,
+        character: currentInput[currentInput.length - 1],
+        expectedCharacter:
+          currentSequenceToCompare[currentSequenceToCompare.length - 1],
+      });
       setIsLevelStarted(false);
       setCurrentLevel(1);
       setCurrentInput("");
@@ -234,26 +280,48 @@ const App = () => {
       </div>
       {isLevelStarted ? (
         <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">
-          <div className="invisible">{seconds}</div>
+          <div className="invisible text-xl">{seconds}</div>
           <div className="flex flex-row gap-4">{keycaps}</div>
-          <div>{seconds}</div>
+          <div className="text-xl">{seconds}</div>
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">
           {currentLevel === 1 && (
             <div className="flex flex-col justify-center items-center">
-              <div className="mb-5">Rules:</div>
+              {lossByLetGo && (
+                <div className="mb-20 text-red-400">
+                  You lost on level {lossByLetGo.level} by letting go of{" "}
+                  {lossByLetGo.character.toUpperCase()} in{" "}
+                  {lossByLetGo.sequence.toUpperCase()}.
+                </div>
+              )}
+              {lossByWrongInput && (
+                <div className="mb-20 text-red-400">
+                  You lost on level {lossByWrongInput.level} by pressing{" "}
+                  {lossByWrongInput.character.toUpperCase()} instead of{" "}
+                  {lossByWrongInput.expectedCharacter.toUpperCase()} in{" "}
+                  {lossByWrongInput.sequence.toUpperCase()}.
+                </div>
+              )}
+              {lossByTime && (
+                <div className="mb-20 text-red-400">
+                  You lost on level {lossByTime.level} by running out of time
+                  finishing {lossByTime.sequence.toUpperCase()}.
+                </div>
+              )}
+              <div className="mb-5">RULES:</div>
               <div className="mr-auto">
                 - Enter each key you see from left to right while not letting go
-                of any of them.
+                of any of them before the time runs out.
               </div>
               <div className="mr-auto">
                 - If needed, feel free to use other parts of your body other
                 than your fingers.
               </div>
+              <div className="mr-auto">- Have fun.</div>
             </div>
           )}
-          <div>PRESS ENTER TO START LEVEL {currentLevel}</div>
+          <div className="blink">PRESS ENTER TO START LEVEL {currentLevel}</div>
         </div>
       )}
     </div>
