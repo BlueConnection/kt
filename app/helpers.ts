@@ -1,5 +1,7 @@
+import { ALPHA_NUMERIC_CHARS } from "./constants";
+
 export function generateRandomSequence(length: number) {
-  let alphanumericChars = "abcdefghijklmnopqrstuvwxyz0123456789";
+  let alphanumericChars = ALPHA_NUMERIC_CHARS;
 
   let result = "";
 
