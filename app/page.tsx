@@ -33,6 +33,7 @@ const App = () => {
   const [lossByTime, setLossByTime] = useState<LossByTimeInformation | null>(
     null
   );
+  const [lastEnteredKey, setLastEnteredKey] = useState("");
   const [highScore, setHighScore] = useLocalStorageState("highScore", {
     defaultValue: 0,
   });
@@ -79,6 +80,8 @@ const App = () => {
 
   const onKeyDown = useCallback(
     (event: globalThis.KeyboardEvent) => {
+      setLastEnteredKey(event.key);
+
       if (!isLevelStarted && event.key === "Enter") {
         setLossByLetGo(null);
         setLossByWrongInput(null);
@@ -206,7 +209,7 @@ const App = () => {
       setLossByWrongInput({
         level: currentLevel,
         sequence: currentSequence,
-        character: currentInput[currentInput.length - 1],
+        character: lastEnteredKey,
         expectedCharacter:
           currentSequenceToCompare[currentSequenceToCompare.length - 1],
       });
@@ -245,6 +248,7 @@ const App = () => {
     setHighScore,
     restart,
     timerSeconds,
+    lastEnteredKey,
   ]);
 
   // ADD & REMOVE EVENT HANDLERS
@@ -318,7 +322,9 @@ const App = () => {
                 - If needed, feel free to use other parts of your body other
                 than your fingers.
               </div>
-              <div className="mr-auto">- Have fun.</div>
+              <div className="mr-auto">
+                - Be one with your keeb and have fun.
+              </div>
             </div>
           )}
           <div className="blink">PRESS ENTER TO START LEVEL {currentLevel}</div>
