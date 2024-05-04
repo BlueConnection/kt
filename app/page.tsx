@@ -12,6 +12,11 @@ import {
   LossByTimeInformation,
   LossByWrongInputInformation,
 } from "./types";
+import {
+  BEGINNING_LENGTH,
+  BEGINNING_LEVEL,
+  BEGINNING_TIMER,
+} from "./constants";
 
 const robotoMono = Roboto_Mono({
   weight: "400",
@@ -19,12 +24,12 @@ const robotoMono = Roboto_Mono({
 });
 
 const App = () => {
-  const [currentLevel, setCurrentLevel] = useState(1);
-  const [currentLength, setCurrentLength] = useState(3);
+  const [currentLevel, setCurrentLevel] = useState(BEGINNING_LEVEL);
+  const [currentLength, setCurrentLength] = useState(BEGINNING_LENGTH);
   const [currentInput, setCurrentInput] = useState("");
   const [currentSequence, setCurrentSequence] = useState("");
   const [isLevelStarted, setIsLevelStarted] = useState(false);
-  const [timerSeconds, setTimerSeconds] = useState(3);
+  const [timerSeconds, setTimerSeconds] = useState(BEGINNING_TIMER);
   const [lossByLetGo, setLossByLetGo] = useState<LossByLetGoInformation | null>(
     null
   );
@@ -41,7 +46,7 @@ const App = () => {
     expiryTimestamp: (() => {
       const time = new Date();
 
-      time.setSeconds(time.getSeconds() + 3);
+      time.setSeconds(time.getSeconds() + BEGINNING_TIMER);
 
       return time;
     })(),
@@ -49,7 +54,7 @@ const App = () => {
     onExpire: () => {
       const time = new Date();
 
-      time.setSeconds(time.getSeconds() + 3);
+      time.setSeconds(time.getSeconds() + BEGINNING_TIMER);
 
       restart(time, false);
 
@@ -58,7 +63,7 @@ const App = () => {
         sequence: currentSequence,
       });
       setIsLevelStarted(false);
-      setCurrentLevel(1);
+      setCurrentLevel(BEGINNING_LEVEL);
       setCurrentInput("");
       setCurrentSequence(generateRandomSequence(currentLength));
     },
@@ -118,12 +123,12 @@ const App = () => {
       ) {
         const time = new Date();
 
-        time.setSeconds(time.getSeconds() + 3);
+        time.setSeconds(time.getSeconds() + BEGINNING_TIMER);
 
         restart(time, false);
 
         setIsLevelStarted(false);
-        setCurrentLevel(1);
+        setCurrentLevel(BEGINNING_LEVEL);
         setCurrentInput("");
         setCurrentSequence(generateRandomSequence(currentLength));
         setLossByLetGo({
@@ -147,44 +152,44 @@ const App = () => {
   useEffect(() => {
     switch (currentLevel) {
       case 1:
-        setCurrentLength(3);
-        setTimerSeconds(3);
+        setCurrentLength(BEGINNING_LENGTH); // 3
+        setTimerSeconds(BEGINNING_TIMER); // 5
         break;
       case 5:
         setCurrentLength((prev) => ++prev); // 4
-        setTimerSeconds((prev) => ++prev); // 4
+        setTimerSeconds((prev) => ++prev); // 6
         break;
       case 15:
         setCurrentLength((prev) => ++prev); // 5
-        setTimerSeconds((prev) => prev + 2); // 6
+        setTimerSeconds((prev) => prev + 2); // 8
         break;
       case 30:
         setCurrentLength((prev) => ++prev); // 6
-        setTimerSeconds((prev) => prev + 2); // 8
+        setTimerSeconds((prev) => prev + 2); // 10
         break;
       case 50:
         setCurrentLength((prev) => ++prev); // 7
-        setTimerSeconds((prev) => prev + 2); // 10
+        setTimerSeconds((prev) => prev + 2); // 12
         break;
       case 75:
         setCurrentLength((prev) => ++prev); // 8
-        setTimerSeconds((prev) => ++prev); // 11
+        setTimerSeconds((prev) => ++prev); // 13
         break;
       case 105:
         setCurrentLength((prev) => ++prev); // 9
-        setTimerSeconds((prev) => ++prev); // 12
+        setTimerSeconds((prev) => ++prev); // 14
         break;
       case 140:
         setCurrentLength((prev) => ++prev); // 10
-        setTimerSeconds((prev) => ++prev); // 13
+        setTimerSeconds((prev) => ++prev); // 15
         break;
       case 145:
         setCurrentLength((prev) => ++prev); // 11
-        setTimerSeconds((prev) => ++prev); // 14
+        setTimerSeconds((prev) => ++prev); // 16
         break;
       case 150:
         setCurrentLength((prev) => ++prev); // 12
-        setTimerSeconds((prev) => ++prev); // 15
+        setTimerSeconds((prev) => ++prev); // 17
         break;
       default:
         break;
@@ -202,7 +207,7 @@ const App = () => {
     if (currentInput !== currentSequenceToCompare) {
       const time = new Date();
 
-      time.setSeconds(time.getSeconds() + 3);
+      time.setSeconds(time.getSeconds() + BEGINNING_TIMER);
 
       restart(time, false);
 
@@ -214,7 +219,7 @@ const App = () => {
           currentSequenceToCompare[currentSequenceToCompare.length - 1],
       });
       setIsLevelStarted(false);
-      setCurrentLevel(1);
+      setCurrentLevel(BEGINNING_LEVEL);
       setCurrentInput("");
       setCurrentSequence(generateRandomSequence(currentLength));
     }
