@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Keyboard Twister",
+  title: "Tatsumakeeb",
   description:
     "A web game to test your ability to think quick and to test your fingers's agility on your keyboard.",
 };
