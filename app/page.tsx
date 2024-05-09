@@ -5,7 +5,7 @@ import Keycap from "./components/keycap/Keycap";
 import { generateRandomSequence } from "./helpers";
 import { Roboto_Mono } from "next/font/google";
 import useLocalStorageState from "use-local-storage-state";
-import { useTimer } from "react-timer-hook";
+import { ColorHex, CountdownCircleTimer } from "react-countdown-circle-timer";
 import "./page.css";
 import {
   LossByLetGoInformation,
@@ -22,6 +22,14 @@ const robotoMono = Roboto_Mono({
   weight: "400",
   subsets: ["latin"],
 });
+
+const colors: { 0: ColorHex } & { 1: ColorHex } & ColorHex[] = [
+  "#5BFF65",
+  "#FCFF2E",
+  "#FFA21A",
+  "#FF1616",
+  "#000000",
+];
 
 const App = () => {
   const [currentLevel, setCurrentLevel] = useState(BEGINNING_LEVEL);
@@ -42,32 +50,6 @@ const App = () => {
   const [highScore, setHighScore] = useLocalStorageState("highScore", {
     defaultValue: 0,
   });
-  const { seconds, restart } = useTimer({
-    expiryTimestamp: (() => {
-      const time = new Date();
-
-      time.setSeconds(time.getSeconds() + BEGINNING_TIMER);
-
-      return time;
-    })(),
-    autoStart: false,
-    onExpire: () => {
-      const time = new Date();
-
-      time.setSeconds(time.getSeconds() + BEGINNING_TIMER);
-
-      restart(time, false);
-
-      setLossByTime({
-        level: currentLevel,
-        sequence: currentSequence,
-      });
-      setIsLevelStarted(false);
-      setCurrentLevel(BEGINNING_LEVEL);
-      setCurrentInput("");
-      setCurrentSequence(generateRandomSequence(currentLength));
-    },
-  });
 
   const keycaps = useMemo(
     () =>
@@ -83,6 +65,16 @@ const App = () => {
     [currentSequence, currentInput]
   );
 
+  const colorsTime = useMemo<{ 0: number } & { 1: number } & number[]>(() => {
+    const increment = Math.floor(timerSeconds / 5);
+
+    const stageTwo = increment * 4;
+    const stageThree = increment * 3;
+    const stageFour = increment * 2;
+
+    return [timerSeconds, stageTwo, stageThree, stageFour, 0];
+  }, [timerSeconds]);
+
   const onKeyDown = useCallback(
     (event: globalThis.KeyboardEvent) => {
       setLastEnteredKey(event.key);
@@ -93,12 +85,6 @@ const App = () => {
         setLossByTime(null);
         setCurrentInput("");
         setIsLevelStarted(true);
-
-        const time = new Date();
-
-        time.setSeconds(time.getSeconds() + timerSeconds);
-
-        restart(time, true);
       }
 
       if (!isLevelStarted) {
@@ -111,7 +97,7 @@ const App = () => {
 
       setCurrentInput((prev) => prev + event.key);
     },
-    [isLevelStarted, restart, timerSeconds]
+    [isLevelStarted]
   );
 
   const onKeyUp = useCallback(
@@ -121,12 +107,6 @@ const App = () => {
         currentInput !== currentSequence &&
         event.key !== "Enter"
       ) {
-        const time = new Date();
-
-        time.setSeconds(time.getSeconds() + BEGINNING_TIMER);
-
-        restart(time, false);
-
         setIsLevelStarted(false);
         setCurrentLevel(BEGINNING_LEVEL);
         setCurrentInput("");
@@ -138,15 +118,19 @@ const App = () => {
         });
       }
     },
-    [
-      currentInput,
-      currentLength,
-      currentSequence,
-      isLevelStarted,
-      restart,
-      currentLevel,
-    ]
+    [currentInput, currentLength, currentSequence, isLevelStarted, currentLevel]
   );
+
+  const onComplete = useCallback(() => {
+    setLossByTime({
+      level: currentLevel,
+      sequence: currentSequence,
+    });
+    setIsLevelStarted(false);
+    setCurrentLevel(BEGINNING_LEVEL);
+    setCurrentInput("");
+    setCurrentSequence(generateRandomSequence(currentLength));
+  }, [currentLength, currentLevel, currentSequence]);
 
   // KEY COUNT INCREASES
   useEffect(() => {
@@ -205,12 +189,6 @@ const App = () => {
     );
 
     if (currentInput !== currentSequenceToCompare) {
-      const time = new Date();
-
-      time.setSeconds(time.getSeconds() + BEGINNING_TIMER);
-
-      restart(time, false);
-
       setLossByWrongInput({
         level: currentLevel,
         sequence: currentSequence,
@@ -232,13 +210,6 @@ const App = () => {
       if (currentLevel > highScore) {
         setHighScore(currentLevel);
       }
-
-      const time = new Date();
-
-      time.setSeconds(time.getSeconds() + timerSeconds);
-
-      restart(time, false);
-
       setIsLevelStarted(false);
       setCurrentLevel((prev) => ++prev);
       setCurrentInput("");
@@ -251,7 +222,6 @@ const App = () => {
     currentLevel,
     highScore,
     setHighScore,
-    restart,
     timerSeconds,
     lastEnteredKey,
   ]);
@@ -281,7 +251,6 @@ const App = () => {
     <div className={`${robotoMono.className} h-full`}>
       <div className="flex flex-row justify-between">
         <div className="invisible">HIGH SCORE: {highScore}</div>
-
         <div className={isLevelStarted ? "" : "invisible"}>
           LEVEL {currentLevel}
         </div>
@@ -289,9 +258,27 @@ const App = () => {
       </div>
       {isLevelStarted ? (
         <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">
-          <div className="invisible text-xl">{seconds}</div>
+          <div className="invisible">
+            <CountdownCircleTimer
+              isPlaying={isLevelStarted}
+              duration={timerSeconds}
+              colors={colors}
+              colorsTime={colorsTime}
+              onComplete={onComplete}
+              size={100}
+            />
+          </div>
           <div className="flex flex-row gap-4">{keycaps}</div>
-          <div className="text-xl">{seconds}</div>
+          <div>
+            <CountdownCircleTimer
+              isPlaying={isLevelStarted}
+              duration={timerSeconds}
+              colors={colors}
+              colorsTime={colorsTime}
+              onComplete={onComplete}
+              size={100}
+            />
+          </div>
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">

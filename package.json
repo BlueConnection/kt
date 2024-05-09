@@ -11,14 +11,16 @@
   "dependencies": {
     "next": "14.2.3",
     "react": "^18",
+    "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "^18",
-    "react-timer-hook": "^3.0.7",
+    "theme-change": "^2.5.0",
     "use-local-storage-state": "^19.2.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "daisyui": "^4.10.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
