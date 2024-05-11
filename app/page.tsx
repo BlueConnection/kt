@@ -17,6 +17,7 @@ import {
   BEGINNING_LEVEL,
   BEGINNING_TIMER,
 } from "./constants";
+import { themeChange } from "theme-change";
 
 const robotoMono = Roboto_Mono({
   weight: "400",
@@ -49,6 +50,9 @@ const App = () => {
   const [lastEnteredKey, setLastEnteredKey] = useState("");
   const [highScore, setHighScore] = useLocalStorageState("highScore", {
     defaultValue: 0,
+  });
+  const [theme, setTheme] = useLocalStorageState("theme", {
+    defaultValue: "default",
   });
 
   const keycaps = useMemo(
@@ -247,14 +251,92 @@ const App = () => {
     setCurrentSequence(generateRandomSequence(currentLength));
   }, [currentLength]);
 
+  useEffect(() => {
+    themeChange(false);
+  }, []);
+
   return (
     <div className={`${robotoMono.className} h-full`}>
       <div className="flex flex-row justify-between">
-        <div className="invisible">HIGH SCORE: {highScore}</div>
-        <div className={isLevelStarted ? "" : "invisible"}>
-          LEVEL {currentLevel}
+        <div
+          className={isLevelStarted ? "dropdown invisible w-32" : "dropdown"}
+        >
+          <div tabIndex={0} role="button" className="btn !text-base">
+            Theme
+            <svg
+              width="12px"
+              height="12px"
+              className="h-2 w-2 fill-current opacity-60 inline-block"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 2048 2048"
+            >
+              <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+            </svg>
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-52 mt-1"
+          >
+            <li>
+              <input
+                data-set-theme="default"
+                type="radio"
+                name="theme-dropdown"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                aria-label="Default"
+                value="default"
+                checked={theme === "default"}
+                onChange={() => {
+                  setTheme("default");
+                }}
+              />
+            </li>
+            <li>
+              <input
+                data-set-theme="light"
+                type="radio"
+                name="theme-dropdown"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                aria-label="Light"
+                value="light"
+                checked={theme === "light"}
+                onChange={() => {
+                  setTheme("light");
+                }}
+              />
+            </li>
+            <li>
+              <input
+                data-set-theme="dark"
+                type="radio"
+                name="theme-dropdown"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                aria-label="Dark"
+                value="dark"
+                checked={theme === "dark"}
+                onChange={() => {
+                  setTheme("dark");
+                }}
+              />
+            </li>
+            <li>
+              <input
+                data-set-theme="coffee"
+                type="radio"
+                name="theme-dropdown"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                aria-label="Coffee"
+                value="coffee"
+                checked={theme === "coffee"}
+                onChange={() => {
+                  setTheme("coffee");
+                }}
+              />
+            </li>
+          </ul>
         </div>
-        <div>HIGH SCORE: {highScore}</div>
+        {isLevelStarted && <div>LEVEL {currentLevel}</div>}
+        <div className="w-32">HIGH SCORE: {highScore}</div>
       </div>
       {isLevelStarted ? (
         <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">
