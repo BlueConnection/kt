@@ -367,14 +367,14 @@ const App = () => {
           {currentLevel === 1 && (
             <div className="flex flex-col justify-center items-center">
               {lossByLetGo && (
-                <div className="mb-20 text-red-400">
+                <div className="text-red-400">
                   You lost on level {lossByLetGo.level} by letting go of{" "}
                   {lossByLetGo.character.toUpperCase()} in{" "}
                   {lossByLetGo.sequence.toUpperCase()}.
                 </div>
               )}
               {lossByWrongInput && (
-                <div className="mb-20 text-red-400">
+                <div className="text-red-400">
                   You lost on level {lossByWrongInput.level} by pressing{" "}
                   {lossByWrongInput.character.toUpperCase()} instead of{" "}
                   {lossByWrongInput.expectedCharacter.toUpperCase()} in{" "}
@@ -382,23 +382,27 @@ const App = () => {
                 </div>
               )}
               {lossByTime && (
-                <div className="mb-20 text-red-400">
+                <div className="text-red-400">
                   You lost on level {lossByTime.level} by running out of time
                   finishing {lossByTime.sequence.toUpperCase()}.
                 </div>
               )}
-              <div className="mb-5">RULES:</div>
-              <div className="mr-auto">
-                - Enter each key you see from left to right while not letting go
-                of any of them before the time runs out.
-              </div>
-              <div className="mr-auto">
-                - If needed, feel free to use other parts of your body other
-                than your fingers.
-              </div>
-              <div className="mr-auto">
-                - Be one with your keeb and have fun.
-              </div>
+              {!lossByLetGo && !lossByTime && !lossByWrongInput && (
+                <>
+                  <div className="mb-5">RULES:</div>
+                  <div className="mr-auto">
+                    - Enter each key you see from left to right while not
+                    letting go of any of them before the time runs out.
+                  </div>
+                  <div className="mr-auto">
+                    - If needed, feel free to use other parts of your body other
+                    than your fingers.
+                  </div>
+                  <div className="mr-auto">
+                    - Be one with your keeb and have fun.
+                  </div>
+                </>
+              )}
             </div>
           )}
           <div className="blink">PRESS ENTER TO START LEVEL {currentLevel}</div>
