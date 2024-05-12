@@ -321,6 +321,20 @@ const App = () => {
             </li>
             <li>
               <input
+                data-set-theme="aqua"
+                type="radio"
+                name="theme-dropdown"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                aria-label="Aqua"
+                value="aqua"
+                checked={theme === "aqua"}
+                onChange={() => {
+                  setTheme("aqua");
+                }}
+              />
+            </li>
+            <li>
+              <input
                 data-set-theme="coffee"
                 type="radio"
                 name="theme-dropdown"
