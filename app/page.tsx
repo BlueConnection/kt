@@ -264,7 +264,7 @@ const App = () => {
             isLevelStarted ? "dropdown w-44 invisible" : "dropdown w-44"
           }
         >
-          <div tabIndex={0} role="button" className="btn text-base">
+          <div tabIndex={0} role="button" className="btn text-base font-normal">
             Theme
             <svg
               width="12px"
@@ -285,7 +285,7 @@ const App = () => {
                 data-set-theme="default"
                 type="radio"
                 name="theme-dropdown"
-                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start font-normal"
                 aria-label="Default"
                 value="default"
                 checked={theme === "default"}
@@ -299,7 +299,7 @@ const App = () => {
                 data-set-theme="light"
                 type="radio"
                 name="theme-dropdown"
-                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start font-normal"
                 aria-label="Light"
                 value="light"
                 checked={theme === "light"}
@@ -313,7 +313,7 @@ const App = () => {
                 data-set-theme="dark"
                 type="radio"
                 name="theme-dropdown"
-                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start font-normal"
                 aria-label="Dark"
                 value="dark"
                 checked={theme === "dark"}
@@ -327,7 +327,7 @@ const App = () => {
                 data-set-theme="acid"
                 type="radio"
                 name="theme-dropdown"
-                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start font-normal"
                 aria-label="Acid"
                 value="acid"
                 checked={theme === "acid"}
@@ -341,7 +341,7 @@ const App = () => {
                 data-set-theme="aqua"
                 type="radio"
                 name="theme-dropdown"
-                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start font-normal"
                 aria-label="Aqua"
                 value="aqua"
                 checked={theme === "aqua"}
@@ -355,7 +355,7 @@ const App = () => {
                 data-set-theme="coffee"
                 type="radio"
                 name="theme-dropdown"
-                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start font-normal"
                 aria-label="Coffee"
                 value="coffee"
                 checked={theme === "coffee"}
@@ -372,7 +372,7 @@ const App = () => {
         )}
       </div>
       {isLevelStarted ? (
-        <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">
+        <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-50px)]">
           <div className="invisible">
             <CountdownCircleTimer
               isPlaying={isLevelStarted}
@@ -396,7 +396,7 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">
+        <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-50px)]">
           {currentLevel === 1 && (
             <div className="flex flex-col justify-center items-center">
               {lossByLetGo && (

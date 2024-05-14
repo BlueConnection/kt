@@ -7,7 +7,7 @@ type KeycapProps = {
 
 const Keycap = ({ character, isPressed }: KeycapProps) => {
   let className =
-    "flex justify-center items-center border-2 rounded-2xl w-20 h-20 text-2xl keycap";
+    "flex justify-center items-center border-2 rounded-2xl w-16 h-16 text-2xl keycap";
 
   if (isPressed) {
     className = `${className} pressed`;
