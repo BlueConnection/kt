@@ -18,6 +18,7 @@ import {
   BEGINNING_TIMER,
 } from "./constants";
 import { themeChange } from "theme-change";
+import { TypeAnimation } from "react-type-animation";
 
 const robotoMono = Roboto_Mono({
   weight: "400",
@@ -257,11 +258,13 @@ const App = () => {
 
   return (
     <div className={`${robotoMono.className} h-full`}>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between items-center">
         <div
-          className={isLevelStarted ? "dropdown invisible w-32" : "dropdown"}
+          className={
+            isLevelStarted ? "dropdown w-44 invisible" : "dropdown w-44"
+          }
         >
-          <div tabIndex={0} role="button" className="btn !text-base">
+          <div tabIndex={0} role="button" className="btn text-base">
             Theme
             <svg
               width="12px"
@@ -321,6 +324,20 @@ const App = () => {
             </li>
             <li>
               <input
+                data-set-theme="acid"
+                type="radio"
+                name="theme-dropdown"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                aria-label="Acid"
+                value="acid"
+                checked={theme === "acid"}
+                onChange={() => {
+                  setTheme("acid");
+                }}
+              />
+            </li>
+            <li>
+              <input
                 data-set-theme="aqua"
                 type="radio"
                 name="theme-dropdown"
@@ -349,8 +366,10 @@ const App = () => {
             </li>
           </ul>
         </div>
-        {isLevelStarted && <div>LEVEL {currentLevel}</div>}
-        <div className="w-32">HIGH SCORE: {highScore}</div>
+        {!isLevelStarted && <div>TATSUMAKEEB</div>}
+        {!isLevelStarted && (
+          <div className="w-44 text-right">HIGHEST LEVEL: {highScore}</div>
+        )}
       </div>
       {isLevelStarted ? (
         <div className="flex flex-col justify-center items-center gap-20 h-[calc(100%-20px)]">
@@ -381,14 +400,14 @@ const App = () => {
           {currentLevel === 1 && (
             <div className="flex flex-col justify-center items-center">
               {lossByLetGo && (
-                <div className="mb-20 text-red-400">
+                <div className="loss-reason">
                   You lost on level {lossByLetGo.level} by letting go of{" "}
                   {lossByLetGo.character.toUpperCase()} in{" "}
                   {lossByLetGo.sequence.toUpperCase()}.
                 </div>
               )}
               {lossByWrongInput && (
-                <div className="mb-20 text-red-400">
+                <div className="loss-reason">
                   You lost on level {lossByWrongInput.level} by pressing{" "}
                   {lossByWrongInput.character.toUpperCase()} instead of{" "}
                   {lossByWrongInput.expectedCharacter.toUpperCase()} in{" "}
@@ -396,23 +415,32 @@ const App = () => {
                 </div>
               )}
               {lossByTime && (
-                <div className="mb-20 text-red-400">
+                <div className="loss-reason">
                   You lost on level {lossByTime.level} by running out of time
                   finishing {lossByTime.sequence.toUpperCase()}.
                 </div>
               )}
-              <div className="mb-5">RULES:</div>
-              <div className="mr-auto">
-                - Enter each key you see from left to right while not letting go
-                of any of them before the time runs out.
-              </div>
-              <div className="mr-auto">
-                - If needed, feel free to use other parts of your body other
-                than your fingers.
-              </div>
-              <div className="mr-auto">
-                - Be one with your keeb and have fun.
-              </div>
+              {!lossByLetGo && !lossByTime && !lossByWrongInput && (
+                <>
+                  <div className="mb-5">
+                    <TypeAnimation
+                      sequence={["RULES:"]}
+                      speed={50}
+                      cursor={false}
+                    />
+                  </div>
+                  <div className="mr-auto">
+                    <TypeAnimation
+                      style={{ whiteSpace: "pre-line" }}
+                      sequence={[
+                        `- Enter each key you see from left to right while not letting go of any of them before the time runs out.\n- Be one with your keeb and have fun.`,
+                      ]}
+                      speed={75}
+                      cursor={false}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           )}
           <div className="blink">PRESS ENTER TO START LEVEL {currentLevel}</div>

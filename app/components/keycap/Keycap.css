@@ -1,3 +1,7 @@
 .pressed {
-  background-color: #c2f8e0;
+  color: var(--fallback-b1, oklch(var(--b1) / 1));
+
+  background-color: var(--fallback-bc, oklch(var(--bc) / 1));
+
+  border-color: var(--fallback-bc, oklch(var(--bc) / 1));
 }
