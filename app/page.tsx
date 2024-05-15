@@ -100,7 +100,7 @@ const App = () => {
         return;
       }
 
-      setCurrentInput((prev) => prev + event.key);
+      setCurrentInput((prev) => prev + event.key.toLowerCase());
     },
     [isLevelStarted]
   );
