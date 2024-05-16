@@ -6,6 +6,12 @@
   color: oklch(var(--er));
 }
 
+.timerDot {
+  background-color: var(--fallback-bc, oklch(var(--bc) / 1));
+
+  border-color: var(--fallback-bc, oklch(var(--bc) / 1));
+}
+
 @keyframes blink-animation {
   0% {
     opacity: 1;
