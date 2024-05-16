@@ -9,7 +9,7 @@ const config: Config = {
   ],
   plugins: [daisyui],
   daisyui: {
-    themes: ["light", "dark", "coffee", "aqua", "acid"],
+    themes: ["light", "dark", "aqua", "coffee", "retro"],
   },
 };
 export default config;

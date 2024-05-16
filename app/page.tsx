@@ -345,20 +345,6 @@ const App = () => {
             </li>
             <li>
               <input
-                data-set-theme="acid"
-                type="radio"
-                name="theme-dropdown"
-                className="theme-controller btn btn-sm btn-block btn-ghost justify-start font-normal"
-                aria-label="Acid"
-                value="acid"
-                checked={theme === "acid"}
-                onChange={() => {
-                  setTheme("acid");
-                }}
-              />
-            </li>
-            <li>
-              <input
                 data-set-theme="aqua"
                 type="radio"
                 name="theme-dropdown"
@@ -382,6 +368,20 @@ const App = () => {
                 checked={theme === "coffee"}
                 onChange={() => {
                   setTheme("coffee");
+                }}
+              />
+            </li>
+            <li>
+              <input
+                data-set-theme="retro"
+                type="radio"
+                name="theme-dropdown"
+                className="theme-controller btn btn-sm btn-block btn-ghost justify-start font-normal"
+                aria-label="Retro"
+                value="retro"
+                checked={theme === "retro"}
+                onChange={() => {
+                  setTheme("retro");
                 }}
               />
             </li>
